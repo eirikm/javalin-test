@@ -1,1 +1,1 @@
-web: target/appassembler/bin/hello $PORT
+web: target/appassembler/bin/hello 5000
