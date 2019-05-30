@@ -1,1 +1,1 @@
-web: target/appassembler/bin/hello
+web: target/appassembler/bin/app

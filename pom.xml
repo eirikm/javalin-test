@@ -40,8 +40,8 @@
                 <configuration>
                     <programs>
                         <program>
+                            <id>app</id>
                             <mainClass>HelloWorld</mainClass>
-                            <id>hello</id>
                         </program>
                     </programs>
                 </configuration>
