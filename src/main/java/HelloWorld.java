@@ -2,9 +2,7 @@ import io.javalin.Javalin;
 
 public class HelloWorld {
     public static void main(String[] args) {
-        Integer port = Integer.valueOf(args[0]);
-
-        Javalin app = Javalin.create().start(port);
+        Javalin app = Javalin.create().start(5000);
         app.get("/", ctx -> ctx.result("Hello World"));
     }
 }
