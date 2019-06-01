@@ -23,14 +23,17 @@ public class HelloWorld {
     public static void main(String[] args) {
         initLogging();
         log.info("Starting");
-        HikariDataSource hikariDataSource = createDataSource();
+        //HikariDataSource hikariDataSource = createDataSource();
 
-        sql2o = new Sql2o(hikariDataSource);
+        //sql2o = new Sql2o(hikariDataSource);
 
-        Javalin app = Javalin.create().start(5000);
-        app.get("/", ctx -> {
+        Javalin app = Javalin.create()
+                .enableStaticFiles("/static")
+                .start(5000);
+
+        app.get("/api", ctx -> {
             log.info("incoming request");
-            ctx.result("Hello, " + getUserById(1));
+            ctx.result("Hello, test");
         });
     }
 
