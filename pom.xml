@@ -22,6 +22,13 @@
             <version>2.8.0</version>
         </dependency>
 
+        <!-- Json -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.5</version>
+        </dependency>
+
         <!-- logging -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
@@ -67,6 +74,7 @@
             <plugin>
                 <artifactId>exec-maven-plugin</artifactId>
                 <groupId>org.codehaus.mojo</groupId>
+                <version>1.6.0</version>
                 <executions>
                     <execution><!-- Run our version calculation script -->
                         <id>Build elm</id>
