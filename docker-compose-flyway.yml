@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  flyway:
+    image: flyway/flyway
+    command: -url=jdbc:postgresql://postgres:5432/postgres -schemas=public -user=postgres -password=postgres migrate
+    volumes:
+      - ./resources/db/migration:/flyway/sql
+
