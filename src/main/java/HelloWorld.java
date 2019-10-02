@@ -3,9 +3,12 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.Appender;
 import com.zaxxer.hikari.HikariDataSource;
 import io.javalin.Javalin;
+import io.javalin.core.util.JettyServerUtil;
 import io.vavr.Tuple;
 import io.vavr.collection.List;
 import io.vavr.control.Option;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.ServerConnector;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,14 +29,18 @@ public class HelloWorld {
         //HikariDataSource hikariDataSource = createDataSource();
 
         //sql2o = new Sql2o(hikariDataSource);
-
         Javalin app = Javalin.create()
                 .enableStaticFiles("/static")
                 .start(5000);
 
-        app.get("/api", ctx -> {
+        app.get("/api/hello", ctx -> {
             log.info("incoming request");
-            ctx.result("Hello, test");
+            ctx.result("Hello, hello " );
+        });
+
+        app.get("/api/savefromkondis", ctx -> {
+            log.info("incoming request");
+            ctx.result("Hello, i want to save" );
         });
     }
 
