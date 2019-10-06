@@ -3,50 +3,67 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.Appender;
 import com.zaxxer.hikari.HikariDataSource;
 import io.javalin.Javalin;
-import io.javalin.core.util.JettyServerUtil;
 import io.vavr.Tuple;
 import io.vavr.collection.List;
 import io.vavr.control.Option;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.ServerConnector;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 
-public class HelloWorld {
+import static io.javalin.apibuilder.ApiBuilder.*;
+
+public class Api {
     private static int CORALOGIX_COMPANY = 6804;
     private static String CORALOGIX_SUBSYSTEM_NAME = "backend";
 
-    private static final Logger log = LoggerFactory.getLogger(HelloWorld.class);
+    private static final Logger log = LoggerFactory.getLogger(Api.class);
 
     private static Sql2o sql2o;
 
     public static void main(String[] args) {
         initLogging();
         log.info("Starting");
-        //HikariDataSource hikariDataSource = createDataSource();
+        HikariDataSource hikariDataSource = createDataSource();
 
-        //sql2o = new Sql2o(hikariDataSource);
+        sql2o = new Sql2o(hikariDataSource);
         Javalin app = Javalin.create()
                 .enableStaticFiles("/static")
                 .start(5000);
 
-        app.get("/api/hello", ctx -> {
-            log.info("incoming request");
-            ctx.result("Hello, hello " );
-        });
+        app.routes(() -> {
+            get("/hello", ctx -> ctx.result("Hello World"));
+            path("/api", () -> {
+                get("/test", ctx -> ctx.result("Hello World Test"));
+                post("/save", ctx -> {
+                    log.info("save to database");
+                    //saveKondisData();
+                });
+                get("/apidb", ctx -> {
+                    log.info("incoming request");
+                    ctx.result("Hello, hello " + getArrangementById(1));
+                });
+            });
 
-        app.get("/api/savefromkondis", ctx -> {
-            log.info("incoming request");
-            ctx.result("Hello, i want to save" );
         });
     }
 
-    public static String getUserById(int id) {
+
+
+    private static String saveKondisData() {
         try (Connection con = sql2o.open()) {
-            String sql = "SELECT verdi FROM spike where id = :id";
+            String sql = "INSERT INTO ARRANGEMENT(id, overskrift, arrangør) values (2, 'Oslo Maraton2', 'SK Vidar' )";
+            return con.createQuery(sql)
+                    .executeScalar(String.class);
+
+        }
+
+    }
+
+    public static String getArrangementById(int id) {
+        try (Connection con = sql2o.open()) {
+            String sql = "SELECT overskrift FROM arrangement where id = :id";
             return con.createQuery(sql)
                     .addParameter("id", id)
                     .executeScalar(String.class);
